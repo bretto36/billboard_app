@@ -17,9 +17,14 @@ class HomeController extends Controller
      */
     public function showAction()
     {
-        /*$em = $this->getDoctrine()->getManager();*/
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render('public/home/show.html.twig');
+        $leds = $em->getRepository('AppBundle\Entity\Led')
+            ->findAll();
+
+        return $this->render('public/home/show.html.twig', array(
+            'leds' => $leds,
+        ));
     }
 
 }

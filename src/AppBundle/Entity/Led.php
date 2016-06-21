@@ -56,6 +56,16 @@ class Led
     private $slots;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $starting_cost;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -150,4 +160,39 @@ class Led
     {
         return $this->slots;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartingCost()
+    {
+        return $this->starting_cost;
+    }
+
+    /**
+     * @param mixed $starting_cost
+     */
+    public function setStartingCost($starting_cost)
+    {
+        $this->starting_cost = $starting_cost;
+    }
+
+
+
 }

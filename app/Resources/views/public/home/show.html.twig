@@ -60,30 +60,22 @@
                     unlistedAreasAlpha:0.1
                 },
 
-                images: [{
-                    groupId: "amsterdam",
-                    svgPath: icon,
-                    zoomLevel: 50,
-                    scale: 0.5,
-                    title: "Amsterdam",
-                    latitude: 52.3738,
-                    longitude: 4.8910,
-                    label: "Amsterdam",
-                    labelShiftY: 0,
-                    description: "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Liberty-statue-from-below.jpg/220px-Liberty-statue-from-below.jpg' style='width: 100%; margin-right: 10px;' /><p style='color: #1b6d85; font-size: 1.0em; letter-spacing: 0px; font-family: inherit;'></br><i class='fa fa-exclamation-circle'></i><strong> availability: </strong>slots are available right now<br></br><i class='fa fa-euro'></i><strong> price: </strong>advertise from $50 a day.</br></br><i class='fa fa-star'></i><strong> desc: </strong>Amsterdam is amazing, that's why you should advertise here</p><b><button class='btn btn-primary'>more info</button>",
-                },{
-                    groupId: "minZoom-2",
-                    svgPath: icon,
-                    zoomLevel: 50,
-                    scale: 0.5,
-                    title: "Hoofddorp",
-                    latitude: 52.3061,
-                    longitude: 4.6907,
-                    label: "Hoofddorp",
-                    labelShiftY: 0,
-                    description: "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Liberty-statue-from-below.jpg/220px-Liberty-statue-from-below.jpg' style='width: 100%; margin-right: 10px;' /><p style='color: #1b6d85; font-size: 1.0em; letter-spacing: 0px; font-family: inherit;'></br><i class='fa fa-exclamation-circle'></i><strong> availability: </strong>slots are available right now<br></br><i class='fa fa-euro'></i><strong> price: </strong>advertise from $50 a day.</br></br><i class='fa fa-star'></i><strong> desc: </strong>Amsterdam is amazing, that's why you should advertise here</p><b><button class='btn btn-primary'>more info</button>"
-
-                },{
+                images: [
+                {% for led in leds %}
+                    {
+                        groupId: "{{ led.city }}",
+                        svgPath: icon,
+                        zoomLevel: 50,
+                        scale: 0.5,
+                        title: "{{ led.city }}",
+                        latitude: {{ led.latitude }},
+                        longitude: {{ led.longitude }},
+                        label: "{{ led.city }}",
+                        labelShiftY: 0,
+                        description: "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Liberty-statue-from-below.jpg/220px-Liberty-statue-from-below.jpg' style='width: 100%; margin-right: 10px;' /><p style='color: #1b6d85; font-size: 1.0em; letter-spacing: 0px; font-family: inherit;'></br><i class='fa fa-exclamation-circle'></i><strong> availability: </strong>slots are available right now<br></br><i class='fa fa-euro'></i><strong> price: </strong>advertise from €{{ led.startingCost }} a day.</br></br><i class='fa fa-star'></i><strong> desc: </strong>{{ led.description }}</p><b><button class='btn btn-primary'>more info</button>",
+                    },
+                {% endfor %}
+                {
                     svgPath: targetSVG,
                     zoomLevel: 50,
                     scale: 0.9,
@@ -91,7 +83,8 @@
                     label: "Netherlands",
                     latitude: 52.1326,
                     longitude: 5.2913
-                }],
+                }
+                ],
                 /*lines: [{
                     latitudes: [52.1326, 52.3061],
                     longitudes: [5.2913, 4.6907],
@@ -116,17 +109,19 @@
         function revealMapImages (event) {
             var zoomLevel = map.zoomLevel();
             if (zoomLevel < 5) {
-                map.hideGroup("minZoom-2");
-                map.hideGroup("amsterdam");
+                {%  for led in leds %}
+                map.hideGroup("{{ led.city }}");
+                {% endfor %}
             }
             else if (zoomLevel < 3.5) {
-                map.showGroup("minZoom-2");
-                map.showGroup("amsterdam-2");
+                {%  for led in leds %}
+                map.showGroup("{{ led.city }}");
+                {% endfor %}
             }
             else {
-                map.showGroup("minZoom-2");
-                map.showGroup("amsterdam");
-                map.showGroup("minZoom-2.5");
+                {%  for led in leds %}
+                map.showGroup("{{ led.city }}");
+                {% endfor %}
             }
         }
     </script>
@@ -137,20 +132,17 @@
     	JUMBOTRON - START
     =========================== -->
     <section class="content jumbotron jumbotron-full-height">
-
-
-            <div class="item slide-1">
-                {#<div class="slide-mask"></div>
-                <div class="slide-body">#}
-                    <div id="chartdiv" style="width: 100%; height: 800px;"></div>
-                </div>
-           {# </div>#}
-            <div class="item slide-2">
-                <div class="slide-mask"></div>
-                <div class="slide-body">
-                </div>
+        <div class="item slide-1">
+            {#<div class="slide-mask"></div>
+            <div class="slide-body">#}
+                <div id="chartdiv" style="width: 100%; height: 800px;"></div>
             </div>
-
+       {# </div>#}
+        <div class="item slide-2">
+            <div class="slide-mask"></div>
+            <div class="slide-body">
+            </div>
+        </div>
     </section>
     <!-- ==========================
     	JUMBOTRON - END
