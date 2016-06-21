@@ -9,7 +9,6 @@
 {% block headjs %}
     {{ parent() }}
     <script src="{{ asset('bundles/ammaps/ammap.js') }}"></script>
-{#    <script src="{{ asset('bundles/ammaps/ammap_amcharts_extension.js') }}"></script>#}
     <!-- map file should be included after the ammap.js -->
     <script src="{{ asset('bundles/ammaps/maps/js/worldLow.js') }}"></script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/none.js"></script>
@@ -20,7 +19,7 @@
         AmCharts.theme = AmCharts.themes.light;
         var map = AmCharts.makeChart("chartdiv", {
             type: "map",
-            theme: "dark",
+            theme: "none",
             pathToImages: "http://www.amcharts.com/lib/3/images/",
             imagesSettings: {
                 rollOverColor: "#005598",
@@ -41,17 +40,9 @@
                 zoomLatitude: 52,
                 areas: [{
                     title: "Netherlands",
-                    id: "NL",
-                    /*pattern: {
-                        url: "http://extra.amcharts.com/images/fr.jpg",
-                        x: -5,
-                        y: 0,
-                        width: 50,
-                        height: 35
-                    }*/
+                    id: "NL"
                 }
                 ],
-
                 areasSettings: {
                     rollOverOutlineColor: "#FFFFFF",
                     rollOverColor: "#CC0000",

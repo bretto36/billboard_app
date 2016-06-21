@@ -51,7 +51,7 @@ class Led
     private $longitude;
 
     /**
-     * @ORM\OneToMany(targetEntity="Slot", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Slot", mappedBy="led")
      */
     private $slots;
 
