@@ -115,6 +115,10 @@
                 {% endfor %}
             }
         }
+
+        $(function() {
+            $('#chartdiv').height($(window).height());
+        });
     </script>
 {% endblock %}
 
