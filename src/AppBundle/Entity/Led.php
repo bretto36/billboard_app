@@ -41,12 +41,12 @@ class Led
     private $address;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=19, scale=4)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=19, scale=4)
      */
     private $longitude;
 
