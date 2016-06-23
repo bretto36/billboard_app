@@ -18,16 +18,10 @@ class LedController extends Controller
     /**
      * @Route("/store/{ledId}", name="led_list")
      */
-    public function listAction($ledId, $startTime = null, $endTime = null, Request $request)
+    public function listAction($ledId, Request $request)
     {
-
-        if ($startTime == null) {
-            $startTime = new \DateTime(strtotime('now'|date('m-d-Y')));
-        }
-
-        if ($endTime == null) {
-            $endTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
-        }
+        $startTime = new \DateTime(strtotime('now'|date('m-d-Y')));
+        $endTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -43,24 +37,25 @@ class LedController extends Controller
         $slots = $em->getRepository('AppBundle:Slot')
             ->findBy(['led' => $ledId]);
 
-        $slotsUnAvailable = $em->getRepository('AppBundle:Slot')
-            ->findAllSlotsUnAvailable($startTime, $endTime);
-
         //only handles data on POST
         $form = $this->createForm(LedFormType::class);
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            //THIS IS FOR INSERTING INTO DB//
-            /*$runningTime = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($runningTime);
-            $em->flush();
-
-            return $this->redirectToRoute('led_list');*/
-        }
+        // This line was missing
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $startTime = $data['startTime'];
+                $endTime = $data['endTime'];
+            } else {
+                // Check for errors and show a message
+            }
+        }
+
+        $slotsUnAvailable = $em->getRepository('AppBundle:Slot')
+            ->findAllSlotsUnAvailable($startTime, $endTime);
 
         return $this->render('public/led/list.html.twig', [
             'led'               => $led,
@@ -69,7 +64,7 @@ class LedController extends Controller
             'slotsUnAvailable'  => $slotsUnAvailable,
             'startTime'         => $startTime,
             'endTime'           => $endTime,
-            'ledForm' => $form->createView(),
+            'ledForm'           => $form->createView(),
         ]);
     }
 }
