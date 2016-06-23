@@ -50,6 +50,15 @@ class LedController extends Controller
         $form = $this->createForm(LedFormType::class);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //THIS IS FOR INSERTING INTO DB//
+            /*$runningTime = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($runningTime);
+            $em->flush();
+
+            return $this->redirectToRoute('led_list');*/
         }
         $form->handleRequest($request);
 
@@ -60,7 +69,7 @@ class LedController extends Controller
             'slotsUnAvailable'  => $slotsUnAvailable,
             'startTime'         => $startTime,
             'endTime'           => $endTime,
-            'LedForm' => $form->createView(),
+            'ledForm' => $form->createView(),
         ]);
     }
 }
