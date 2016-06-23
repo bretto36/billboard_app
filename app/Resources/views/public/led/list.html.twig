@@ -86,10 +86,10 @@
                                     });
                                 </script>#}
                             </ul>
-                            {{ form_start(LedForm) }}
-                                {{ form_widget(LedForm) }}
-                                <button type="submit" class="btn btn-primary">Check Dates</button>
-                            {{ form_end(LedForm) }}
+                            {{ form_start(ledForm) }}
+                                {{ form_widget(ledForm) }}
+
+                            {{ form_end(ledForm) }}
                             {%  if slotsUnAvailable|length < 20 %}
                                 <i class="fa fa-check-circle-o"></i> A slot is available for this date range!</br>
 
