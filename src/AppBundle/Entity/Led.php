@@ -26,27 +26,27 @@ class Led
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      */
     private $country;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      */
     private $city;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      */
     private $address;
 
     /**
-     * @ORM\Column(type="decimal", precision=19, scale=4)
+     * @ORM\Column(type="decimal", precision=19, scale=4, nullable=false)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=19, scale=4)
+     * @ORM\Column(type="decimal", precision=19, scale=4, nullable=false)
      */
     private $longitude;
 
@@ -56,14 +56,19 @@ class Led
     private $slots;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $starting_cost;
+
+    /**
+     * @ORM\Column(type="text", nullable=false)
+     */
+    private $areaDescription;
 
     /**
      * @return mixed
@@ -191,6 +196,22 @@ class Led
     public function setStartingCost($starting_cost)
     {
         $this->starting_cost = $starting_cost;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAreaDescription()
+    {
+        return $this->areaDescription;
+    }
+
+    /**
+     * @param mixed $areaDescription
+     */
+    public function setAreaDescription($areaDescription)
+    {
+        $this->areaDescription = $areaDescription;
     }
 
 

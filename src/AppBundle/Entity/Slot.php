@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SlotRepository")
  * @ORM\Table(name="slot")
  */
 class Slot
@@ -26,11 +26,6 @@ class Slot
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Advert", mappedBy="slot")
-     */
-    private $advert;
-
-    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Led", inversedBy="slots")
      */
     private $led;
@@ -41,6 +36,36 @@ class Slot
     private $display_time;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $applied;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $finalized;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $start_time;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $end_time;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -48,13 +73,6 @@ class Slot
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAdvert()
-    {
-        return $this->advert;
-    }
     
     /**
      * @return mixed
@@ -79,4 +97,107 @@ class Slot
     {
         $this->display_time = $display_time;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApplied()
+    {
+        return $this->applied;
+    }
+
+    /**
+     * @param mixed $applied
+     */
+    public function setApplied($applied)
+    {
+        $this->applied = $applied;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFinalized()
+    {
+        return $this->finalized;
+    }
+
+    /**
+     * @param mixed $finalized
+     */
+    public function setFinalized($finalized)
+    {
+        $this->finalized = $finalized;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartTime()
+    {
+        return $this->start_time;
+    }
+
+    /**
+     * @param mixed $start_time
+     */
+    public function setStartTime($start_time)
+    {
+        $this->start_time = $start_time;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndTime()
+    {
+        return $this->end_time;
+    }
+
+    /**
+     * @param mixed $end_time
+     */
+    public function setEndTime($end_time)
+    {
+        $this->end_time = $end_time;
+    }
+
+
 }
