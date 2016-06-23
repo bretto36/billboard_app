@@ -11,21 +11,22 @@ namespace AppBundle\Controller;
 use AppBundle\Form\LedFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class LedController extends Controller
 {
     /**
      * @Route("/store/{ledId}", name="led_list")
      */
-    public function listAction($ledId, $startDate = null, $endDate = null)
+    public function listAction($ledId, $startTime = null, $endTime = null, Request $request)
     {
 
-        if ($startDate == null) {
-            $startDate = new \DateTime(strtotime('now'|date('m-d-Y')));
+        if ($startTime == null) {
+            $startTime = new \DateTime(strtotime('now'|date('m-d-Y')));
         }
 
-        if ($endDate == null) {
-            $endDate = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
+        if ($endTime == null) {
+            $endTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -43,17 +44,22 @@ class LedController extends Controller
             ->findBy(['led' => $ledId]);
 
         $slotsUnAvailable = $em->getRepository('AppBundle:Slot')
-            ->findAllSlotsUnAvailable($startDate, $endDate);
+            ->findAllSlotsUnAvailable($startTime, $endTime);
 
+        //only handles data on POST
         $form = $this->createForm(LedFormType::class);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+        $form->handleRequest($request);
 
         return $this->render('public/led/list.html.twig', [
             'led'               => $led,
             'leds'              => $leds,
             'slots'             => $slots,
             'slotsUnAvailable'  => $slotsUnAvailable,
-            'startDate'         => $startDate,
-            'endDate'           => $endDate,
+            'startTime'         => $startTime,
+            'endTime'           => $endTime,
             'LedForm' => $form->createView(),
         ]);
     }

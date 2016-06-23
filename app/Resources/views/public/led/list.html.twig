@@ -6,7 +6,6 @@
     {{ parent() }}
     {#<link href="{{ asset('css/fullcalendar.css') }}" rel="stylesheet">#}
     <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
-
 {% endblock %}
 
 {% block headjs %}
@@ -73,10 +72,10 @@
                                 <li><i>each slot runs for 15 seconds</i></li>
                                 <li><span>Minimum Exposure Time</span>2.4 hours every day</li>
                                 <li><span>Screen Size</span>3.6m Wide x 1.28m High</li>
-                                <li><span>Choose Your Dates</span><input id="demo" type="text" name="datefilter" class="form-control" value="" /></li>
+                                {#<li><span>Choose Your Dates</span><input id="runningDates" type="text" name="datefilter" class="form-control" value="" /></li>
                                 <a href="" class="btn btn-primary "><i class="fa"></i>Check Dates</a>
                                 <script>
-                                    $('#demo').daterangepicker({
+                                    $('#runningDates').daterangepicker({
                                         "showWeekNumbers": true,
                                         "showISOWeekNumbers": true,
                                         "startDate": "{{ 'now'|date('m-d-y') }}",
@@ -85,12 +84,16 @@
                                     }, function(start, end, label) {
                                         console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
                                     });
-                                </script>
+                                </script>#}
                             </ul>
+                            {{ form_start(LedForm) }}
+                                {{ form_widget(LedForm) }}
+                                <button type="submit" class="btn btn-primary">Check Dates</button>
+                            {{ form_end(LedForm) }}
                             {%  if slotsUnAvailable|length < 20 %}
                                 <i class="fa fa-check-circle-o"></i> A slot is available for this date range!</br>
 
-                                <i class="fa fa-money"></i> Total cost is <strong>$350</strong> for  {% set difference = date(endDate).diff(date(startDate)) %}
+                                <i class="fa fa-money"></i> Total cost is <strong>$350</strong> for  {% set difference = date(endTime).diff(date(startTime)) %}
                                 {% set runningDays = difference.days %}
                                 {% if runningDays == 1 %}
                                     1 day

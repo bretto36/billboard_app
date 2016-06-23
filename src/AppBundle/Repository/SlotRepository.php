@@ -15,15 +15,15 @@ class SlotRepository extends EntityRepository
     /**
      * @return Slot[]
      */
-    public function findAllSlotsUnAvailable($startDate, $endDate)
+    public function findAllSlotsUnAvailable($startTime, $endTime)
     {
         return $this->createQueryBuilder('slot')
-            ->andWhere('slot.start_time >= :startDate')
-            ->orWhere('slot.start_time <= :endDate')
-            ->andWhere('slot.end_time <= :endDate')
-            ->orWhere('slot.end_time >= :startDate')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
+            ->andWhere('slot.start_time >= :startTime')
+            ->orWhere('slot.start_time <= :endTime')
+            ->andWhere('slot.end_time <= :endTime')
+            ->orWhere('slot.end_time >= :startTime')
+            ->setParameter('startTime', $startTime)
+            ->setParameter('endTime', $endTime)
             ->getQuery()
             ->execute();
     }

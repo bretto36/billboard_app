@@ -13,17 +13,14 @@ class LedFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startDate', DateType::class)
-            ->add('endDate', DateType::class);
+            ->add('startTime', DateType::class)
+            ->add('endTime', DateType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
-    }
-
-    public function getName()
-    {
-        return 'app_bundle_led_form_type';
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Slot'
+        ]);
     }
 }
