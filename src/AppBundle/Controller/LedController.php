@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\LedFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -34,6 +35,9 @@ class LedController extends Controller
 
         $led = $em->getRepository('AppBundle:Led')
             ->findOneBy(['id' => $ledId]);
+        if (!$led) {
+            throw $this->createNotFoundException('this LED Screen cannot be found');
+        }
 
         $slots = $em->getRepository('AppBundle:Slot')
             ->findBy(['led' => $ledId]);
@@ -41,9 +45,7 @@ class LedController extends Controller
         $slotsUnAvailable = $em->getRepository('AppBundle:Slot')
             ->findAllSlotsUnAvailable($startDate, $endDate);
 
-        if (!$led) {
-            throw $this->createNotFoundException('this LED Screen cannot be found');
-        }
+        $form = $this->createForm(LedFormType::class);
 
         return $this->render('public/led/list.html.twig', [
             'led'               => $led,
@@ -52,6 +54,7 @@ class LedController extends Controller
             'slotsUnAvailable'  => $slotsUnAvailable,
             'startDate'         => $startDate,
             'endDate'           => $endDate,
+            'LedForm' => $form->createView(),
         ]);
     }
 }
