@@ -20,8 +20,8 @@ class LedAddToCartFormType extends AbstractType
             ->add('slot', EntityType::class, [
                 'placeholder' => 'choose a free slot',
                 'class' => Slot::class,
-                'query_builder' => function(SlotRepository $repo) {
-                    return $repo->findAllSlotsAvailable($startTime, $endTime);
+                'query_builder' => function(SlotRepository $repo) use ($options) {
+                    return $repo->queryAllSlotsAvailable($options['data']['startTime'], $options['data']['endTime']);
                 }
             ])
             ->add('cost', IntegerType::class)
@@ -30,8 +30,8 @@ class LedAddToCartFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        /* $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\CartItem'
-        ]);
+        ]); */
     }
 }

@@ -40,7 +40,7 @@ class LedController extends Controller
 
         //only handles data on POST
         $ledAvailabilityForm = $this->createForm(LedAvailabilityFormType::class);
-        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class);
+        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class, ['startTime' => $startTime, 'endTime' => $endTime]);
 
         // This line was missing
         $ledAvailabilityForm->handleRequest($request);
