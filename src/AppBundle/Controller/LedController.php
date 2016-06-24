@@ -8,7 +8,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\LedFormType;
+use AppBundle\Form\LedAddToCartFormType;
+use AppBundle\Form\LedAvailabilityFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +21,8 @@ class LedController extends Controller
      */
     public function listAction($ledId, Request $request)
     {
-        $startTime = new \DateTime(strtotime('now'|date('m-d-Y')));
-        $endTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
+        $startTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
+        $endTime = new \DateTime(strtotime('+50 days'|date('m-d-Y')));
 
         $em = $this->getDoctrine()->getManager();
 
@@ -38,14 +39,17 @@ class LedController extends Controller
             ->findBy(['led' => $ledId]);
 
         //only handles data on POST
-        $form = $this->createForm(LedFormType::class);
+        $ledAvailabilityForm = $this->createForm(LedAvailabilityFormType::class);
+        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class);
 
         // This line was missing
-        $form->handleRequest($request);
+        $ledAvailabilityForm->handleRequest($request);
+        $ledAddToCartForm->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $data = $form->getData();
+
+        if ($ledAvailabilityForm->isSubmitted()) {
+            if ($ledAvailabilityForm->isValid()) {
+                $data = $ledAvailabilityForm->getData();
 
                 $startTime = $data['startTime'];
                 $endTime = $data['endTime'];
@@ -54,17 +58,34 @@ class LedController extends Controller
             }
         }
 
-        $slotsUnAvailable = $em->getRepository('AppBundle:Slot')
-            ->findAllSlotsUnAvailable($startTime, $endTime);
+        if ($ledAddToCartForm->isSubmitted()) {
+            if ($ledAddToCartForm->isValid()) {
+                $cartItem = $ledAddToCartForm->getData();
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($cartItem);
+                $em->flush();
+
+                $this->addFlash('success', 'you have added the LED Screen to your Cart');
+
+                return $this->redirectToRoute('led_list', array('ledId' => $ledId));
+            } else {
+                // Check for errors and show a message
+            }
+        }
+
+        $slotsAvailable = $em->getRepository('AppBundle:Slot')
+            ->findAllSlotsAvailable($startTime, $endTime);
 
         return $this->render('public/led/list.html.twig', [
-            'led'               => $led,
-            'leds'              => $leds,
-            'slots'             => $slots,
-            'slotsUnAvailable'  => $slotsUnAvailable,
-            'startTime'         => $startTime,
-            'endTime'           => $endTime,
-            'ledForm'           => $form->createView(),
+            'led'                           => $led,
+            'leds'                          => $leds,
+            'slots'                         => $slots,
+            'slotsAvailable'                => $slotsAvailable,
+            'startTime'                     => $startTime,
+            'endTime'                       => $endTime,
+            'ledAvailabilityForm'           => $ledAvailabilityForm->createView(),
+            'ledAddToCartForm'              => $ledAddToCartForm->createView(),
         ]);
     }
 }

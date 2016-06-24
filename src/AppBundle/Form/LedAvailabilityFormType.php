@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LedFormType extends AbstractType
+class LedAvailabilityFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,3 +18,4 @@ class LedFormType extends AbstractType
             ->add('checkDate', SubmitType::class);
     }
 }
+

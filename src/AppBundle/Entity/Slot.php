@@ -114,6 +114,7 @@ class Slot
         $this->image = $image;
     }
 
+
     /**
      * @return mixed
      */
@@ -134,6 +135,7 @@ class Slot
     {
         return $this->getName();
     }
+
 
     /**
      * @return mixed
