@@ -20,7 +20,8 @@ class base2Controller extends Controller
             ->findAll();
 
         return $this->render('base2.html.twig', [
-            'leds'  => $leds,
+            'leds'      => $leds,
+            'cartItems' => $cartItems,
         ]);
     }
 

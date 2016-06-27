@@ -84,11 +84,13 @@
                                     <li class="col-sm-4 col-md-3">
                                         <ul class="list-unstyled">
                                             <li class="title">Netherlands <span class="label label-danger pull-right">NEW</span></li>
-                                            {% for led in leds %}
-                                                {% if led.country == "Netherlands"%}
-                                                    <li><a href="products.html">{{ led.city }} - {{ led.address }}</a></li>
-                                                {% endif %}
-                                            {% endfor %}
+                                            {% if leds %}
+                                                {% for led in leds %}
+                                                    {% if led.country == "Netherlands"%}
+                                                        <li><a href="products.html">{{ led.city }} - {{ led.address }}</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
                                         </ul>
                                     </li>
                                     <li class="hidden-xs hidden-sm col-md-3">

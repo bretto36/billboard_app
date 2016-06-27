@@ -13,16 +13,16 @@ use AppBundle\Form\LedAvailabilityFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Session;
 class LedController extends Controller
 {
     /**
      * @Route("/store/{ledId}", name="led_list")
      */
-    public function listAction($ledId, Request $request)
+    public function listAction($ledId,Request $request)
     {
-        $startTime = new \DateTime(strtotime('+7 days'|date('m-d-Y')));
-        $endTime = new \DateTime(strtotime('+50 days'|date('m-d-Y')));
+        $startTime = null;
+        $endTime = null;
 
         $em = $this->getDoctrine()->getManager();
 
@@ -40,7 +40,7 @@ class LedController extends Controller
 
         //only handles data on POST
         $ledAvailabilityForm = $this->createForm(LedAvailabilityFormType::class);
-        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class, ['startTime' => $startTime, 'endTime' => $endTime]);
+        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class);
 
         // This line was missing
         $ledAvailabilityForm->handleRequest($request);

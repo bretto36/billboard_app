@@ -1,19 +1,14 @@
 {% extends 'base2.html.twig' %}
 
-{% block title %}AdsUp - Get your ads Up!{% endblock %}
+{% block title %}Upload Your Image{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {#<link href="{{ asset('css/fullcalendar.css') }}" rel="stylesheet">#}
-    <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/slim.css.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block headjs %}
-    {#{{ parent() }}#}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{{ asset('js/moment.min.js') }}"></script>
-    {#<script src="{{ asset('js/fullcalendar.js') }}"></script>#}
-    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}
@@ -77,30 +72,37 @@
                             {{ form_widget(ledAvailabilityForm) }}
 
                             {{ form_end(ledAvailabilityForm) }}
-                            {%  if slotsAvailable|length >= 1 and startTime is not null %}
+                            {%  if slotsAvailable|length >= 1 %}
                                 {% set difference = date(endTime).diff(date(startTime)) %}
                                 {% set runningDays = difference.days %}
                                 {% set cost = runningDays * led.startingCost %}
                                 {% set hours = runningDays * 2.4 %}
-                                <p><i class="fa fa-check-circle-o"></i> A slot is available for this date range.</p>
+                                {% if slotsAvailable|length == 1 %}
+                                    <p><i class="fa fa-check-circle-o"></i> {{ slotsAvailable|length }} slot is available for this date range</p>
+                                {% else %}
+                                    <p><i class="fa fa-check-circle-o"></i> {{ slotsAvailable|length }} slots are available for this date range</p>
+                                {% endif %}
                                 {% if runningDays == 1 %}
-                                <p><i class="fa fa-money"></i> Total cost is <strong>${{ cost }}</strong> for <strong>{{ runningDays }}</strong> day</p>
+                                    <p><i class="fa fa-money"></i> Total cost is <strong>${{ cost }}</strong> for <strong>{{ runningDays }}</strong> day</p>
                                 {% else %}
                                     <p><i class="fa fa-money"></i> Total cost is <strong>${{ cost }}</strong> for <strong>{{ runningDays }}</strong> days of advertising.</p>
                                 {% endif %}
                                 <p><i class="fa fa-clock-o"></i> Your ad will receive a minimum <strong>{{ hours }}</strong> hours of exposure time.</p>
-                                {{ dump(slotsAvailable|first) }}
-                                <div class="product-form clearfix">
-                                    <div class="row row-no-padding">
-                                        <div class="col-md-3 col-sm-12">
-                                            <a href="{{ path('cart', {'ledId': led.id, 'slotId': slotsAvailable|first.id, 'cost': cost, 'days': runningDays}) }}" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% elseif startTime is not null and slotsAvailable|length < 1 %}
+                                {{ form_start(ledAddToCartForm) }}
+                                {{ form_widget(ledAddToCartForm) }}
+
+                                {{ form_end(ledAddToCartForm) }}
+                            {% else %}
                                 <p><i class="fa fa-close"></i> There are no slots available from {{ startTime|date('F jS ') }} to {{ endTime|date('F jS ') }}. Please choose another date range.</p>
                             {% endif %}
 
+                            {#<div class="product-form clearfix">
+                                <div class="row row-no-padding">
+                                    <div class="col-md-3 col-sm-12">
+                                        <a href="" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>#}
                             {#<ul class="list-inline product-links">
                                 <li><a href="#"><i class="fa fa-heart"></i>Add to wishlist</a></li>
                                 <li><a href="#"><i class="fa fa-exchange"></i>Compare</a></li>
@@ -109,11 +111,6 @@
                         </div>
                     </div>
                 </div>
-                {#<div class="row">
-                    <div class="col-lg-5">
-                        <div id="calendarVisitor"></div>
-                    </div>
-                </div>#}
             </article>
             <div class="tabs product-tabs">
                 <ul class="nav nav-tabs" role="tablist">
@@ -413,17 +410,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/bootstrap-hover-dropdown.min.js') }}"></script>
-    <script src="{{ asset('js/color-switcher.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-    <script src="{{ asset('js/jquery.card.js') }}"></script>
-    <script src="{{ asset('js/jquery.dragtable.js') }}"></script>
-    <script src="{{ asset('js/jquery.mb.YTPlayer.min.js') }}"></script>
-    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('js/SmoothScroll.js') }}"></script>
-    <script src="{{ asset('js/twitterFetcher_min.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('js/slim.kickstart.js') }}"></script>
 {% endblock %}
