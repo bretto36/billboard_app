@@ -65,10 +65,7 @@ class Slot
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Please upload the image you want to advertise")
-     * @Assert\File(
-     *     mimeTypes={ "applications/jpeg", "applications/png", "applications/bmp" },
-     *     mimeTypesMessage = "Please upload the image you want to advertise"
-     * )
+     * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/bmp" })
      */
     private $image;
 

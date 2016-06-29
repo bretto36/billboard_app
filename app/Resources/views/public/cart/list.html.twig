@@ -37,7 +37,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <article class="account-content">
-                        {{ dump(cartItems) }}
                         <form>
                             <div class="products-order shopping-cart">
                                 <div class="table-responsive">
@@ -56,8 +55,9 @@
                                         {% if session is defined %}
                                             {% for cartItems in session %}
                                                 {% for eachitem in cartItems %}
+                                                    {{ dump(eachitem.cartItem) }}
                                                     <tr>
-                                                        {% if eachitem.cartItem.image is empty %}
+                                                        {% if eachitem.cartItem.image is null %}
                                                             <td class="col-xs-1"><a href="{{ path('image_upload', {'slotId': eachitem.cartItem.slot.id}) }}" class="btn btn-primary">Add Image</a></td>
                                                         {% else %}
                                                             <td class="col-xs-1"><img src="assets/images/products/product-1.jpg" alt="" class="img-responsive"></td>

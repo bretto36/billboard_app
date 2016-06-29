@@ -24,7 +24,7 @@ class CartController extends Controller
     {
         $cartItems = array();
         $session = $this->get("session");
-        /*$session->clear();*/
+        $session->clear();
 
         $em = $this->getDoctrine()->getManager();
         $slot = $em->getRepository('AppBundle:Slot')
@@ -75,7 +75,7 @@ class CartController extends Controller
                         'slot' => $slot,
                         'cost' => $cost,
                         'days' => $days,
-                        'image' => '',
+                        'image' => null,
                     ),
                 );
                 array_push($cartItems, $cartItem);
