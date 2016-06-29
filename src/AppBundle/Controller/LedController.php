@@ -21,6 +21,8 @@ class LedController extends Controller
      */
     public function listAction($ledId,Request $request)
     {
+        $session = $this->get("session");
+
         $startTime = null;
         $endTime = null;
 
@@ -61,7 +63,7 @@ class LedController extends Controller
         if ($ledAddToCartForm->isSubmitted()) {
             if ($ledAddToCartForm->isValid()) {
                 $cartItem = $ledAddToCartForm->getData();
-
+                
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($cartItem);
                 $em->flush();
@@ -86,6 +88,7 @@ class LedController extends Controller
             'endTime'                       => $endTime,
             'ledAvailabilityForm'           => $ledAvailabilityForm->createView(),
             'ledAddToCartForm'              => $ledAddToCartForm->createView(),
+            'session'                       => $session,
         ]);
     }
 }

@@ -30,32 +30,55 @@ class CartController extends Controller
         $slot = $em->getRepository('AppBundle:Slot')
             ->findOneBy(['id' => $slotId]);
 
+        if (isset($slot)) {
+            $slot->setApplied(1);
+
+            $em->persist($slot);
+            $em->flush();
+        }
+
         //check if the session has cartItems
         if ($session->has('cartItems')) {
 
             $cartItems = $session->get('cartItems');
             $newCartItem = array(
-                'slot' => $slot,
-                'cost' => $cost,
-                'days' => $days
+                'cartItem' => array(
+                    'slot' => $slot,
+                    'cost' => $cost,
+                    'days' => $days,
+                    'image' => '',
+                ),
             );
 
-            //check if this newCartItem already exists in cartItems here...
+            //check if the slot is already in the cart
+            $slotExists = false;
 
-            array_push($cartItems, $newCartItem);
-            $session->set('cartItems', $cartItems);
-
-            $this->addFlash('success', 'you have added another the LED and time slot to your cart.');
-
+            foreach ($cartItems as $key => $value) {
+                if ($newCartItem['cartItem']['slot'] == $value['cartItem']['slot']) {
+                    $slotExists = true;
+                }
+            }
+            if ($slotExists == true) {
+                $this->addFlash('success', 'you have already added this slot to your cart.');
+            } else {
+                array_push($cartItems, $newCartItem);
+                $session->set('cartItems', $cartItems);
+                $this->addFlash('success', 'you have added another the LED and time slot to your cart.');
+            }
         }
         //if session doesn't have any cartItems create the session and add cartItems
         else {
             if ($slot != null && $cost != null ) {
-                $cartItems = array(
-                    'slot' => $slot,
-                    'cost' => $cost,
-                    'days' => $days
+                $cartItems = array();
+                $cartItem = array(
+                    'cartItem' => array(
+                        'slot' => $slot,
+                        'cost' => $cost,
+                        'days' => $days,
+                        'image' => '',
+                    ),
                 );
+                array_push($cartItems, $cartItem);
                 $session->set('cartItems', $cartItems);
 
                 $this->addFlash('success', 'you have added your first LED and time slot to your cart.');
@@ -79,6 +102,24 @@ class CartController extends Controller
             'leds'           => $leds,
             'led'            => $led,
             'session'        => $session,
+        ]);
+    }
+
+    /**
+     * @Route("/store/cart", name="cart_list")
+     */
+    public function listAction()
+    {
+        $session = $this->get("session");
+
+        $em = $this->getDoctrine()->getManager();
+
+        $leds = $em->getRepository('AppBundle\Entity\Led')
+            ->findAll();
+
+        return $this->render('public/cart/list.html.twig', [
+            'session'   => $session,
+            'leds'      => $leds
         ]);
     }
 

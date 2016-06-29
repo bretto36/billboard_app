@@ -42,29 +42,41 @@
                     <div class="vertical-menu-top hidden-xs">
                         <ul class="nav navbar-nav">
                             <li class="dropdown navbar-cart">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="true"><i class="fa fa-shopping-cart"></i> 3 item(s)</a>
+                                {% if session is defined %}
+                                    {% for cartItem in session %}
+                                        {% if cartItem.slot is defined %}
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="true"><i class="fa fa-shopping-cart"></i> {{ cartItem|length }} item(s)</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 <ul class="dropdown-menu">
 
                                     <!-- CART ITEM - START -->
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <img src="{{ asset('img/products/product-1.jpg') }}" class="img-responsive" alt="">
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <h4><a href="single-product.html">Fusce Aliquam</a></h4>
-                                                <p>1x - $20.00</p>
-                                                <a href="#" class="remove"><i class="fa fa-times-circle"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    {% if session is defined %}
+                                        {% for cartItem in session %}
+                                            {% if cartItem.slot is defined %}
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <img src="{{ asset('img/products/product-1.jpg') }}" class="img-responsive" alt="">
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <h4><a href="{{ path('cart_list') }}">{{ cartItem.slot.led.address }}</a></h4>
+                                                            <p>{{ cartItem.days}} days - {{ cartItem.cost }}</p>
+                                                            <a href="#" class="remove"><i class="fa fa-times-circle"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                     <!-- CART ITEM - END -->
 
                                     <!-- CART ITEM - START -->
                                     <li>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="cart.html" class="btn btn-primary btn-block">View Cart</a>
+                                                <a href="{{ path('cart_list') }}" class="btn btn-primary btn-block">View Cart</a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a>
@@ -102,7 +114,7 @@
                     </div>
 
                     <div class="navbar-collapse collapse">
-                        <p class="navbar-text hidden-xs hidden-sm">Get your ads Up!</p>
+                        <p class="navbar-text hidden-xs hidden-sm">Put Your Ads Up Today</p>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
                                 <a href="{{ path('store_home_show') }}">Home</a>

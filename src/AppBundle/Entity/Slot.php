@@ -8,13 +8,14 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SlotRepository")
  * @ORM\Table(name="slot")
+ * @Vich\Uploadable
  */
 class Slot
 {
@@ -35,10 +36,6 @@ class Slot
      */
     private $display_time;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $image;
 
     /**
      * @ORM\Column(type="string")
@@ -46,12 +43,12 @@ class Slot
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default":0})
      */
     private $applied;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default":0})
      */
     private $finalized;
 
@@ -64,6 +61,17 @@ class Slot
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $end_time;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Please upload the image you want to advertise")
+     * @Assert\File(
+     *     mimeTypes={ "applications/jpeg", "applications/png", "applications/bmp" },
+     *     mimeTypesMessage = "Please upload the image you want to advertise"
+     * )
+     */
+    private $image;
+
 
     /**
      * @return mixed
@@ -96,22 +104,6 @@ class Slot
     public function setDisplayTime($display_time)
     {
         $this->display_time = $display_time;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
     }
 
 
@@ -200,6 +192,24 @@ class Slot
     {
         $this->end_time = $end_time;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    
 
 
 }

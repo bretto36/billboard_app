@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Session;
 class HomeController extends Controller
 {
     /**
@@ -17,6 +18,7 @@ class HomeController extends Controller
      */
     public function showAction()
     {
+        $session = $this->get("session");
         $em = $this->getDoctrine()->getManager();
 
         $leds = $em->getRepository('AppBundle\Entity\Led')
@@ -24,6 +26,7 @@ class HomeController extends Controller
 
         return $this->render('public/home/show.html.twig', array(
             'leds' => $leds,
+            'session' => $session,
         ));
     }
 

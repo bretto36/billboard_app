@@ -9,7 +9,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\Session;
 class base2Controller extends Controller
 {
     public function baseAction()
@@ -20,8 +20,7 @@ class base2Controller extends Controller
             ->findAll();
 
         return $this->render('base2.html.twig', [
-            'leds'      => $leds,
-            'cartItems' => $cartItems,
+            'leds'    => $leds,
         ]);
     }
 

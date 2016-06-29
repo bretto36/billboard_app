@@ -1,0 +1,139 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Upload Your Image{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/slim.css') }}" rel="stylesheet">
+    {{ parent() }}
+{% endblock %}
+
+{% block headjs %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $(selector).slim({
+                "ratio": "4:3",
+                "minSize": {
+                    "width": 640,
+                    "height": 480,
+                },
+                "service": "upload-async.php",
+                "post": ["input", "output", "actions"],
+                "download": false,
+                "onSave": function(data, ready) { alert('saving!'); },
+                "label": "Drop your image here.",
+                "buttonConfirmLabel":"Ok"
+            });
+        });
+
+        $('#my-snippet').slimParse();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <!-- ==========================
+    	BREADCRUMB - START
+    =========================== -->
+    <section class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h2>{{ slot.led.address }}</h2>
+                    <p>{{ slot.led.city }}</p>
+                </div>
+                <div class="col-xs-6">
+                    <ol class="breadcrumb">
+                        <li><a href="{{ path('store_home_show') }}">Home</a></li>
+                        <li><a href="{{ path('cart_list') }}">Cart</a></li>
+                        <li class="active">Image Upload</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==========================
+        BREADCRUMB - END
+    =========================== -->
+    <section class="content account">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <aside class="sidebar">
+
+                        <!-- WIDGET:CATEGORIES - START -->
+                        <div class="widget widget-navigation">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class="active"><a href="my-account.html">Upload Your Image</a></li>
+                            </ul>
+                        </div>
+                        <!-- WIDGET:CATEGORIES - END -->
+
+                    </aside>
+                </div>
+                <div class="col-sm-9">
+                    <article class="account-content">
+                        <h3>Welcome <span>To The Image Uploader</span></h3>
+                        <p>Your Image must meet the below requirements</p>
+                        <div class="icon-nav row">
+                            <div class="col-xs-6 col-md-3"><a href="address.html"><i>Max File Size</i> 100MB</a></div>
+                            <div class="col-xs-6 col-md-3"><a href="orders.html"><i>Display Ratio</i> 19:10</a></div>
+                            <div class="col-xs-6 col-md-3"><a href="orders.html"><i>Recommended Pixel Size</i> 1920px x 1080px</a></div>
+                            <div class="col-xs-6 col-md-3"><a href="wishlist.html"><i>File Type</i> JPEG, JPG, PNG</a></div>
+                        </div>
+                        <div id="my-snippet">
+                            <input type="file" class="slim"/>
+                        </div>
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+
+                        {{ form_end(form) }}
+                        {#<h4>Unpaid Orders</h4>
+                        <div class="table-responsive border">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th class="col-xs-3">Order ID</th>
+                                    <th class="col-xs-3">Date</th>
+                                    <th class="col-sm-2 hidden-xs">Items</th>
+                                    <th class="col-xs-3">Total Price</th>
+                                    <th class="col-xs-1"></th>
+                                </tr>
+                                <tr>
+                                    <td><a href="single-order.html">#124321</a></td>
+                                    <td>12th July 2015</td>
+                                    <td class="hidden-xs">3</td>
+                                    <td>$265</td>
+                                    <td><a href="single-order.html" class="btn btn-primary btn-sm">Pay</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <h4>Pending Warranty Claims</h4>
+                        <div class="table-responsive border">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th class="col-xs-2">Claim ID</th>
+                                    <th class="col-xs-2">Date</th>
+                                    <th class="col-xs-2">Product Code</th>
+                                    <th class="col-xs-5">Product Name</th>
+                                    <th class="col-xs-1"></th>
+                                </tr>
+                                <tr>
+                                    <td><a href="single-order.html">#5712</a></td>
+                                    <td>12th July 2015</td>
+                                    <td>U-187423</td>
+                                    <td>Fusce Aliquam <span class="grey">(M, Black, Esprit)</span></td>
+                                    <td><a href="single-claim.html" class="btn btn-primary btn-sm">View</a></td>
+                                </tr>
+                            </table>
+                        </div>#}
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/slim.kickstart.js') }}"></script>
+
+{% endblock %}
