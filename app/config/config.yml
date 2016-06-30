@@ -73,9 +73,16 @@ swiftmailer:
 easy_admin:
     entities:
         - AppBundle\Entity\User
+        - AppBundle\Entity\Led
+        - AppBundle\Entity\Slot
+        - AppBundle\Entity\CartItem
 
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
+    registration:
+            form:
+                type: AppBundle\Form\RegistrationType
+
 

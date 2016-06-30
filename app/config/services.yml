@@ -12,3 +12,13 @@ services:
           arguments: ["@doctrine.orm.entity_manager"]
           tags:
               - { name: form.type }
+  app.form.registration:
+          class: AppBundle\Form\RegistrationType
+          tags:
+              - { name: form.type, alias: app_user_registration }
+
+
+security:
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email

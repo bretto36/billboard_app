@@ -74,7 +74,7 @@ class ImageController extends Controller
 
                 foreach ($cartItems as $key => $value) {
                     if ($value['cartItem']['slot']->getId() == $slotId) {
-                        $session->set($value['cartItem']['image'], "yes");
+                        $session->set($value['cartItem']['image'], $fileName);
                     }
                 }
 
