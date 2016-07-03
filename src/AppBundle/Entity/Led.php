@@ -11,10 +11,12 @@ namespace AppBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SlotScheduleRepository")
  * @ORM\Table(name="led")
+ * @Vich\Uploadable
  */
 class Led
 {

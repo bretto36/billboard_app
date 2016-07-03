@@ -43,31 +43,9 @@ class Slot
     private $name;
 
     /**
-     * @ORM\Column(type="boolean", options={"default":0})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SlotSchedule", mappedBy="slot")
      */
-    private $applied;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default":0})
-     */
-    private $finalized;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $start_time;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $end_time;
-
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please upload the image you want to advertise")
-     * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/bmp" })
-     */
-    private $image;
+    private $slot_schedules;
 
 
     /**
@@ -125,86 +103,17 @@ class Slot
         return $this->getName();
     }
 
-
     /**
-     * @return mixed
+     * @return arrayCollection|SlotSchedule[]
      */
-    public function getApplied()
+    public function getSlotSchedules()
     {
-        return $this->applied;
+        return $this->slot_schedules;
     }
+    
 
-    /**
-     * @param mixed $applied
-     */
-    public function setApplied($applied)
-    {
-        $this->applied = $applied;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getFinalized()
-    {
-        return $this->finalized;
-    }
 
-    /**
-     * @param mixed $finalized
-     */
-    public function setFinalized($finalized)
-    {
-        $this->finalized = $finalized;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartTime()
-    {
-        return $this->start_time;
-    }
-
-    /**
-     * @param mixed $start_time
-     */
-    public function setStartTime($start_time)
-    {
-        $this->start_time = $start_time;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndTime()
-    {
-        return $this->end_time;
-    }
-
-    /**
-     * @param mixed $end_time
-     */
-    public function setEndTime($end_time)
-    {
-        $this->end_time = $end_time;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
 
     
 
