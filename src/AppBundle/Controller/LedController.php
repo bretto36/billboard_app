@@ -75,7 +75,7 @@ class LedController extends Controller
                 // Check for errors and show a message
             }
         }
- 
+
         $slotSchedulesUnAvailable = $em->getRepository('AppBundle:SlotSchedule')
             ->findAllSlotSchedulesUnAvailable($startTime, $endTime, $ledId);
 
@@ -83,7 +83,9 @@ class LedController extends Controller
             $unavailableId['id'] = $unavailableSlot->getId();
         }
 
-        if ($unavailableId) {
+        $slotsAvailable = null;
+
+        if (isset($unavailableId)) {
             $slotsAvailable = $em->getRepository('AppBundle:Slot')
                 ->findAllSlotsAvailable($unavailableId, $ledId);
         }

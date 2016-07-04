@@ -154,4 +154,14 @@ class SlotSchedule
         return $this->slot;
     }
 
+    /**
+     * @param mixed $slot
+     */
+    public function setSlot($slot)
+    {
+        $this->slot = $slot;
+    }
+
+
+
 }

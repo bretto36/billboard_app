@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\SlotSchedule;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,10 +18,10 @@ class CartController extends Controller
 
 
     /**
-     * @Route("/store/cart/{ledId}/{slotId}/{cost}/{days}", defaults={"slotId" = null, "cost" = null, "days" = null}, name="cart")
+     * @Route("/store/cart/{ledId}/{slotId}/{cost}/{days}/{startTime}/{endTime}", defaults={"slotId" = null, "cost" = null, "days" = null, "startTime" = null, "endTime" = null}, name="cart")
      * @Method("GET")
      */
-    public function indexAction($ledId, $slotId, $cost, $days)
+    public function indexAction($ledId, $slotId, $cost, $days, $startTime, $endTime)
     {
         $cartItems = array();
         $session = $this->get("session");
@@ -30,11 +31,16 @@ class CartController extends Controller
         $slot = $em->getRepository('AppBundle:Slot')
             ->findOneBy(['id' => $slotId]);
 
-        if (isset($slot)) {
-            $slot->setApplied(1);
 
+        if (isset($slot)) {
             $em->persist($slot);
             $em->flush();
+
+            $slotSchedule = new SlotSchedule();
+            $slotSchedule->setApplied(1);
+            $slotSchedule->setStartTime($startTime);
+            $slotSchedule->setEndTime($endTime);
+            $slotSchedule->setSlot($slotId);
         }
 
         //check if the session has cartItems
@@ -63,7 +69,7 @@ class CartController extends Controller
             } else {
                 array_push($cartItems, $newCartItem);
                 $session->set('cartItems', $cartItems);
-                $this->addFlash('success', 'you have added another the LED and time slot to your cart.');
+                $this->addFlash('success', 'you have added another LED and time slot to your cart.');
             }
         }
         //if session doesn't have any cartItems create the session and add cartItems

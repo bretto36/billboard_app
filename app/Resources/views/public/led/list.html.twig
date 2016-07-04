@@ -93,27 +93,19 @@
                                 <div class="product-form clearfix">
                                     <div class="row row-no-padding">
                                         <div class="col-md-3 col-sm-12">
-                                            <a href="{{ path('cart', {'ledId': led.id, 'slotId': slotsAvailable|first.id, 'cost': cost, 'days': runningDays}) }}" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                            {{ form_start(ledAddToCartForm) }}
+                                            {{ form_widget(ledAddToCartForm) }}
+
+                                            {{ form_end(ledAddToCartForm) }}
+                                            {#<a href="{{ path('cart', {'ledId': led.id, 'slotId': slotsAvailable|first.id, 'cost': cost, 'days': runningDays, 'startTime': startTime, 'endTime': endTime}) }}" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>#}
                                         </div>
                                     </div>
                                 </div>
                             {% elseif startTime is not null and slotsAvailable|length < 1 %}
                                 <p><i class="fa fa-close"></i> There are no slots available from {{ startTime|date('F jS ') }} to {{ endTime|date('F jS ') }}. Please choose another date range.</p>
                             {% endif %}
-
-                            {#<ul class="list-inline product-links">
-                                <li><a href="#"><i class="fa fa-heart"></i>Add to wishlist</a></li>
-                                <li><a href="#"><i class="fa fa-exchange"></i>Compare</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i>Email to friend</a></li>
-                            </ul>#}
                         </div>
                     </div>
-                </div>
-                {#<div class="row">
-                    <div class="col-lg-5">
-                        <div id="calendarVisitor"></div>
-                    </div>
-                </div>#}
             </article>
             <div class="tabs product-tabs">
                 <ul class="nav nav-tabs" role="tablist">
