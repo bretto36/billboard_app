@@ -28,6 +28,7 @@ class CartController extends Controller
         /*$session->clear();*/
 
         $em = $this->getDoctrine()->getManager();
+
         $slot = $em->getRepository('AppBundle:Slot')
             ->findOneBy(['id' => $slotId]);
 
@@ -35,12 +36,21 @@ class CartController extends Controller
         if ($session->has('cartItems')) {
 
             $cartItems = $session->get('cartItems');
+
+            $slotSchedule = new SlotSchedule();
+            $slotSchedule->setApplied(1);
+            $slotSchedule->setFinalized(0);
+            $slotSchedule->setStartTime(new \DateTime($startTime));
+            $slotSchedule->setEndTime(new \DateTime($endTime));
+            $slotSchedule->setSlot($slot);
+
             $newCartItem = array(
                 'cartItem' => array(
-                    'slot' => $slot,
-                    'cost' => $cost,
-                    'days' => $days,
-                    'image' => '',
+                    'slot'          => $slot,
+                    'slotSchedule'  => $slotSchedule,
+                    'cost'          => $cost,
+                    'days'          => $days,
+                    'image'         => '',
                 ),
             );
 
@@ -48,12 +58,12 @@ class CartController extends Controller
             $slotExists = false;
 
             foreach ($cartItems as $key => $value) {
-                if ($newCartItem['cartItem']['slot'] == $value['cartItem']['slot']) {
+                if ($newCartItem['cartItem']['slotSchedule']->getStartTime() == $value['cartItem']['slotSchedule']->getStartTime()) {
                     $slotExists = true;
                 }
             }
             if ($slotExists == true) {
-                $this->addFlash('success', 'you have already added this slot to your cart.');
+                $this->addFlash('success', 'you have already added this slot Schedule to your cart.');
             } else {
                 array_push($cartItems, $newCartItem);
                 $session->set('cartItems', $cartItems);
@@ -90,7 +100,7 @@ class CartController extends Controller
                 $cartItem = array(
                     'cartItem' => array(
                         'slot' => $slot,
-                        'slotSchedule' => $slotSchedule->getId(),
+                        'slotSchedule' => $slotSchedule,
                         'cost' => $cost,
                         'days' => $days,
                         'image' => null,
