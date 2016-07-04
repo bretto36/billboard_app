@@ -71,10 +71,14 @@ swiftmailer:
     spool:     { type: memory }
 
 easy_admin:
+    site_name: 'AdsUp'
+    design:
+            menu: ['User', 'SlotSchedule', 'Led']
     entities:
         - AppBundle\Entity\User
         - AppBundle\Entity\Led
         - AppBundle\Entity\Slot
+        - AppBundle\Entity\SlotSchedule
         - AppBundle\Entity\CartItem
 
 fos_user:

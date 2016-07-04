@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\LedAddToCartFormType;
 use AppBundle\Form\LedAvailabilityFormType;
+use AppBundle\Form\SlotAddToScheduleFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,11 +43,9 @@ class LedController extends Controller
 
         //only handles data on POST
         $ledAvailabilityForm = $this->createForm(LedAvailabilityFormType::class);
-        $ledAddToCartForm = $this->createForm(LedAddToCartFormType::class);
 
         // This line was missing
         $ledAvailabilityForm->handleRequest($request);
-        $ledAddToCartForm->handleRequest($request);
 
 
         if ($ledAvailabilityForm->isSubmitted()) {
@@ -55,22 +54,6 @@ class LedController extends Controller
 
                 $startTime = $data['startTime'];
                 $endTime = $data['endTime'];
-            } else {
-                // Check for errors and show a message
-            }
-        }
-
-        if ($ledAddToCartForm->isSubmitted()) {
-            if ($ledAddToCartForm->isValid()) {
-                $cartItem = $ledAddToCartForm->getData();
-                
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($cartItem);
-                $em->flush();
-
-                $this->addFlash('success', 'you have added the LED Screen to your Cart');
-
-                return $this->redirectToRoute('led_list', array('ledId' => $ledId));
             } else {
                 // Check for errors and show a message
             }
@@ -99,7 +82,6 @@ class LedController extends Controller
             'startTime'                     => $startTime,
             'endTime'                       => $endTime,
             'ledAvailabilityForm'           => $ledAvailabilityForm->createView(),
-            'ledAddToCartForm'              => $ledAddToCartForm->createView(),
             'session'                       => $session,
         ]);
     }

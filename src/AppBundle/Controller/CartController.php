@@ -31,18 +31,6 @@ class CartController extends Controller
         $slot = $em->getRepository('AppBundle:Slot')
             ->findOneBy(['id' => $slotId]);
 
-
-        if (isset($slot)) {
-            $em->persist($slot);
-            $em->flush();
-
-            $slotSchedule = new SlotSchedule();
-            $slotSchedule->setApplied(1);
-            $slotSchedule->setStartTime($startTime);
-            $slotSchedule->setEndTime($endTime);
-            $slotSchedule->setSlot($slotId);
-        }
-
         //check if the session has cartItems
         if ($session->has('cartItems')) {
 
@@ -69,12 +57,22 @@ class CartController extends Controller
             } else {
                 array_push($cartItems, $newCartItem);
                 $session->set('cartItems', $cartItems);
+
+                $slotSchedule = new SlotSchedule();
+                $slotSchedule->setApplied(1);
+                $slotSchedule->setFinalized(0);
+                $slotSchedule->setStartTime(new \DateTime($startTime));
+                $slotSchedule->setEndTime(new \DateTime($endTime));
+                $slotSchedule->setSlot($slot);
+
+                $em->persist($slotSchedule);
+                $em->flush();
                 $this->addFlash('success', 'you have added another LED and time slot to your cart.');
             }
         }
         //if session doesn't have any cartItems create the session and add cartItems
         else {
-            if ($slot != null && $cost != null ) {
+            if (isset($slot) && $cost != null ) {
                 $cartItems = array();
                 $cartItem = array(
                     'cartItem' => array(
@@ -86,6 +84,19 @@ class CartController extends Controller
                 );
                 array_push($cartItems, $cartItem);
                 $session->set('cartItems', $cartItems);
+
+                //add the slot schedule to the DB, not the session
+                //because we don't want another person taking the time slot before
+                //user has completed checkout
+                $slotSchedule = new SlotSchedule();
+                $slotSchedule->setApplied(1);
+                $slotSchedule->setFinalized(0);
+                $slotSchedule->setStartTime(new \DateTime($startTime));
+                $slotSchedule->setEndTime(new \DateTime($endTime));
+                $slotSchedule->setSlot($slot);
+
+                $em->persist($slotSchedule);
+                $em->flush();
 
                 $this->addFlash('success', 'you have added your first LED and time slot to your cart.');
             }

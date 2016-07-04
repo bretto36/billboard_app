@@ -89,15 +89,12 @@
                                     <p><i class="fa fa-money"></i> Total cost is <strong>${{ cost }}</strong> for <strong>{{ runningDays }}</strong> days of advertising.</p>
                                 {% endif %}
                                 <p><i class="fa fa-clock-o"></i> Your ad will receive a minimum <strong>{{ hours }}</strong> hours of exposure time.</p>
+                                {{ dump(slotSchedulesUnAvailable) }}
                                 {{ dump(slotsAvailable|first) }}
                                 <div class="product-form clearfix">
                                     <div class="row row-no-padding">
                                         <div class="col-md-3 col-sm-12">
-                                            {{ form_start(ledAddToCartForm) }}
-                                            {{ form_widget(ledAddToCartForm) }}
-
-                                            {{ form_end(ledAddToCartForm) }}
-                                            {#<a href="{{ path('cart', {'ledId': led.id, 'slotId': slotsAvailable|first.id, 'cost': cost, 'days': runningDays, 'startTime': startTime, 'endTime': endTime}) }}" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>#}
+                                            <a href="{{ path('cart', {'ledId': led.id, 'slotId': slotsAvailable|first.id, 'cost': cost, 'days': runningDays, 'startTime': startTime|date('y-m-d'), 'endTime': endTime|date('y-m-d')}) }}" class="btn btn-primary add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                         </div>
                                     </div>
                                 </div>
