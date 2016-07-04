@@ -75,14 +75,24 @@ class LedController extends Controller
                 // Check for errors and show a message
             }
         }
+ 
+        $slotSchedulesUnAvailable = $em->getRepository('AppBundle:SlotSchedule')
+            ->findAllSlotSchedulesUnAvailable($startTime, $endTime, $ledId);
 
-        $slotsAvailable = $em->getRepository('AppBundle:Slot')
-            ->findAllSlotsAvailable($startTime, $endTime);
+        foreach ($slotSchedulesUnAvailable as $unavailableSlot) {
+            $unavailableId['id'] = $unavailableSlot->getId();
+        }
+
+        if ($unavailableId) {
+            $slotsAvailable = $em->getRepository('AppBundle:Slot')
+                ->findAllSlotsAvailable($unavailableId, $ledId);
+        }
 
         return $this->render('public/led/list.html.twig', [
             'led'                           => $led,
             'leds'                          => $leds,
             'slots'                         => $slots,
+            'slotSchedulesUnAvailable'      => $slotSchedulesUnAvailable,
             'slotsAvailable'                => $slotsAvailable,
             'startTime'                     => $startTime,
             'endTime'                       => $endTime,

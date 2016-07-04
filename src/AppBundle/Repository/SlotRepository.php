@@ -13,28 +13,21 @@ use Doctrine\ORM\EntityRepository;
 class SlotRepository extends EntityRepository
 {
     /**
-     * @param $startTime
-     * @param $endTime
-     *
      * @return Slot[]
      */
-    public function queryAllSlotsAvailable($startTime, $endTime)
+    public function queryAllSlotsAvailable($unavailableId, $ledId)
     {
         return $this->createQueryBuilder('slot')
-            ->andWhere('slot.start_time < :startTime AND slot.end_time < :startTime')
-            ->orWhere('slot.start_time > :endTime AND slot.end_time > :endTime')
-            ->setParameter('startTime', $startTime)
-            ->setParameter('endTime', $endTime);
+            ->andWhere('slot.led = :ledId AND slot.id != :unavailableId')
+            ->setParameter('unavailableId', $unavailableId)
+            ->setParameter('ledId', $ledId);
     }
     /**
-     * @param $startTime
-     * @param $endTime
-     *
      * @return Slot[]
      */
-    public function findAllSlotsAvailable($startTime, $endTime)
+    public function findAllSlotsAvailable($unavailableId, $ledId)
     {
-        return $this->queryAllSlotsAvailable($startTime, $endTime)
+        return $this->queryAllSlotsAvailable($unavailableId, $ledId)
             ->getQuery()
             ->execute();
     }

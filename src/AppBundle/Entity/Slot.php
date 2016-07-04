@@ -8,6 +8,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,6 +47,11 @@ class Slot
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\SlotSchedule", mappedBy="slot")
      */
     private $slot_schedules;
+
+    public function __construct()
+    {
+        $this->slot_schedules = new ArrayCollection();
+    }
 
 
     /**
