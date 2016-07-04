@@ -44,7 +44,7 @@ class CartController extends Controller
                 ),
             );
 
-            //check if the slot is already in the cart
+            //check if the slot schedule is already in the cart
             $slotExists = false;
 
             foreach ($cartItems as $key => $value) {
@@ -73,18 +73,6 @@ class CartController extends Controller
         //if session doesn't have any cartItems create the session and add cartItems
         else {
             if (isset($slot) && $cost != null ) {
-                $cartItems = array();
-                $cartItem = array(
-                    'cartItem' => array(
-                        'slot' => $slot,
-                        'cost' => $cost,
-                        'days' => $days,
-                        'image' => null,
-                    ),
-                );
-                array_push($cartItems, $cartItem);
-                $session->set('cartItems', $cartItems);
-
                 //add the slot schedule to the DB, not the session
                 //because we don't want another person taking the time slot before
                 //user has completed checkout
@@ -97,6 +85,19 @@ class CartController extends Controller
 
                 $em->persist($slotSchedule);
                 $em->flush();
+
+                $cartItems = array();
+                $cartItem = array(
+                    'cartItem' => array(
+                        'slot' => $slot,
+                        'slotSchedule' => $slotSchedule->getId(),
+                        'cost' => $cost,
+                        'days' => $days,
+                        'image' => null,
+                    ),
+                );
+                array_push($cartItems, $cartItem);
+                $session->set('cartItems', $cartItems);
 
                 $this->addFlash('success', 'you have added your first LED and time slot to your cart.');
             }
